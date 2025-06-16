@@ -123,3 +123,19 @@ void mat_sub(matrix dst, matrix src) {
 }
 
 matrix mat_mult(matrix dst, matrix src);
+
+int mat_is_invertible(matrix mat);
+
+matrix mat_get_inverse(matrix mat);
+
+matrix mat_transpose(matrix mat);
+
+int mat_is_symmetric(matrix mat);
+
+vector mat_get_row(matrix mat, size_t row);
+
+vector mat_get_col(matrix mat, size_t col);
+
+void mat_set_row(matrix mat, vector src, size_t row);
+
+void mat_set_col(matrix mat, vector src, size_t row);
