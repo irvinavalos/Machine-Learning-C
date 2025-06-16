@@ -54,13 +54,25 @@ void mat_print(matrix mat) {
       if (j == mat.col - 1) {
         printf("%f|\n", MAT_GET_AT(mat, i, j));
       } else {
-        printf("%f, ", MAT_GET_AT(mat, i, j));
+        printf("%f ", MAT_GET_AT(mat, i, j));
       }
     }
   }
 }
 
-matrix mat_ident(size_t row, size_t col);
+matrix mat_ident(size_t row, size_t col) {
+  matrix mat = mat_alloc(row, col);
+  for (size_t i = 0; i < row; i++) {
+    for (size_t j = 0; j < col; j++) {
+      if (i == j) {
+        MAT_SET_AT(mat, i, j, 1.0);
+      } else {
+        MAT_SET_AT(mat, i, j, 0.0);
+      }
+    }
+  }
+  return mat;
+}
 
 void mat_scale(matrix mat, float val);
 
