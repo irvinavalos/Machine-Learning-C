@@ -122,4 +122,4 @@ void mat_sub(matrix dst, matrix src) {
   }
 }
 
-void mat_mult(matrix dst, matrix src);
+matrix mat_mult(matrix dst, matrix src);
