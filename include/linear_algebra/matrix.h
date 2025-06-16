@@ -24,6 +24,8 @@ void mat_set(matrix mat, size_t row, size_t col, float val);
 
 void mat_print(matrix mat);
 
+matrix mat_copy(matrix mat);
+
 matrix mat_ident(size_t row, size_t col);
 
 void mat_scale(matrix mat, float val);

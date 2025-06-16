@@ -60,6 +60,20 @@ void mat_print(matrix mat) {
   }
 }
 
+matrix mat_copy(matrix mat) {
+  if (mat.ele == NULL) {
+    printf("Input matrix cannot be empty\n");
+    exit(1);
+  }
+  matrix ret = mat_alloc(mat.row, mat.row);
+  for (size_t i = 0; i < mat.row; i++) {
+    for (size_t j = 0; j < mat.col; j++) {
+      MAT_SET_AT(ret, i, j, MAT_GET_AT(mat, i, j));
+    }
+  }
+  return ret;
+}
+
 matrix mat_ident(size_t row, size_t col) {
   matrix mat = mat_alloc(row, col);
   for (size_t i = 0; i < row; i++) {
