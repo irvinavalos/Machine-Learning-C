@@ -127,3 +127,13 @@ float vec_dot(vector vec1, vector vec2) {
   }
   return ret;
 }
+
+float vec_l1_norm(vector vec);
+
+float vec_l2_norm(vector vec);
+
+float vec_angle_btw(vector dst, vector src);
+
+int vec_are_orthogonal(vector dst, vector src);
+
+int vec_are_orthonormal(vector dst, vector src);
