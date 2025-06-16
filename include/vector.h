@@ -31,6 +31,6 @@ void vec_add(vector dst, vector src);
 
 void vec_sub(vector dst, vector src);
 
-vector vec_dot(vector dst, vector src);
+float vec_dot(vector vec1, vector vec2);
 
 #endif // !VECTOR_H

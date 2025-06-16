@@ -110,20 +110,20 @@ void vec_sub(vector dst, vector src) {
   }
 }
 
-vector vec_dot(vector vec1, vector vec2) {
+float vec_dot(vector vec1, vector vec2) {
   if (vec1.ele == NULL) {
-    printf("Destination vector must not be empty");
+    printf("Vector 1 must not be empty");
     exit(EXIT_FAILURE);
   } else if (vec2.ele == NULL) {
-    printf("Source vector must not be empty");
+    printf("Vector 2 must not be empty");
     exit(EXIT_FAILURE);
   } else if (vec1.dim != vec2.dim) {
     printf("Both vectors must have the same dimension");
     exit(EXIT_FAILURE);
   }
-  vector ret = vec_alloc(vec1.dim);
-  for(size_t i = 0; i < ret.dim; i++) {
-    VEC_SET_AT(ret, i, VEC_GET_AT(vec1, i) * VEC_GET_AT(vec2, i));
+  float ret = 0.0;
+  for(size_t i = 0; i < vec1.dim; i++) {
+    ret += VEC_GET_AT(vec1, i) * VEC_GET_AT(vec2, i);
   }
   return ret;
 }
