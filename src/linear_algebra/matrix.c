@@ -145,11 +145,78 @@ matrix mat_mult(matrix dst, matrix src) {
   return ret;
 }
 
-int mat_are_equal(matrix mat1, matrix mat2);
+int mat_are_equal(matrix mat1, matrix mat2) {
+  if (mat1.col > mat2.col) {
+    printf("Number of columns in matrix 1 is greater than matrix 2\n");
+    exit(1);
+  } else if (mat1.col < mat2.col) {
+    printf("Number of columns in matrix 2 is greater than matrix 1\n");
+    exit(1);
+  } else if (mat1.row > mat2.row) {
+    printf("Number of rows in matrix 1 is greater than matrix 2\n");
+    exit(1);
+  } else if (mat1.row < mat2.row) {
+    printf("Number of rows in matrix 2 is greater than matrix 1\n");
+    exit(1);
+  } else if (mat1.ele == NULL) {
+    printf("Matrix 1 cannot be empty\n");
+    exit(1);
+  } else if (mat2.ele == NULL) {
+    printf("Matrix 1 cannot be empty\n");
+    exit(1);
+  }
+  int ret = 0; 
+  for (size_t i = 0; i < mat1.row; i++) {
+    for (size_t j = 0; j < mat1.col; j++) {
+      float val1 = MAT_GET_AT(mat1, i, j);
+      float val2 = MAT_GET_AT(mat2, i, j);
+      if (val1 != val2) {
+        ret = 1;
+        return ret;
+      }
+    }
+  }
+  return ret;
+}
 
-int mat_is_invertible(matrix mat);
+int mat_is_invertible(matrix mat) {
+  if (mat.ele == NULL) {
+    printf("Matrix cannot be empty\n");
+    exit(1);
+  }
+  int ret = 0;
+  if (mat.dim == 4) {
+    float res = mat.ele[0] * mat.ele[3] - mat.ele[1] * mat.ele[2];
+    if (res > 0) {
+      ret = 1;
+    }
+  }
+  //TODO: mat.dim > 4
+  return ret;
+}
 
-matrix mat_get_inverse(matrix mat);
+matrix mat_get_inverse(matrix mat) {
+  if (mat.ele == NULL) {
+    printf("Matrix cannot be empty\n");
+    exit(1);
+  }
+  matrix ret = mat_alloc(mat.row, mat.col);
+  if (mat.dim == 4) {
+    float det = mat.ele[0] * mat.ele[3] - mat.ele[1] * mat.ele[2];
+    ret.ele[0] = mat.ele[3];
+    ret.ele[1] = -1.0 * mat.ele[1];
+    ret.ele[2] = -1.0 * mat.ele[2];
+    ret.ele[0] = mat.ele[0];
+    for (size_t i = 0; i < ret.row; i++) {
+      for (size_t j = 0; j < ret.col; j++) {
+        float val = MAT_GET_AT(ret, i, j);
+        MAT_SET_AT(mat, i, j, 1.0 / det * val);
+      }
+    }
+  }
+  //TODO: mat.dim > 4
+  return ret;
+}
 
 matrix mat_transpose(matrix mat);
 
