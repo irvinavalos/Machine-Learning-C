@@ -11,8 +11,8 @@ typedef struct {
   size_t dim;
 } matrix;
 
-#define MAT_GET_AT(mat, row, col) mat.ele[row * mat.col + col]
-#define MAT_SET_AT(mat, row, col, val) mat.ele[row * mat.col + col] = val
+#define MAT_GET_AT(m, r, c) (m.ele[r * m.col + c])
+#define MAT_SET_AT(m, r, c, val) m.ele[r * m.col + c] = val
 
 matrix mat_alloc(size_t row, size_t col);
 
@@ -32,6 +32,6 @@ void mat_add(matrix dst, matrix src);
 
 void mat_sub(matrix dst, matrix src);
 
-float vec_dot(vector vec1, vector vec2);
+void mat_mult(matrix dst, matrix src);
 
 #endif // !MATRIX_H
