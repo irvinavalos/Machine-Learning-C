@@ -11,7 +11,7 @@ matrix mat_alloc(size_t row, size_t col) {
 
 void mat_free(matrix mat) {
   if (mat.ele == NULL) {
-    printf("Input matrix cannot be empty");
+    printf("Input matrix cannot be empty\n");
     exit(1);
   }
   mat.row = 0;
@@ -23,10 +23,10 @@ void mat_free(matrix mat) {
 
 float mat_get(matrix mat, size_t row, size_t col) {
   if (row >= mat.row) {
-    printf("Row index out of bounds");
+    printf("Row index out of bounds\n");
     exit(1);
   } else if (col >= mat.col) {
-    printf("Column index out of bounds");
+    printf("Column index out of bounds\n");
     exit(1);
   }
   return MAT_GET_AT(mat, row, col);
@@ -34,10 +34,10 @@ float mat_get(matrix mat, size_t row, size_t col) {
 
 void mat_set(matrix mat, size_t row, size_t col, float val) {
   if (row >= mat.row) {
-    printf("Row index out of bounds");
+    printf("Row index out of bounds\n");
     exit(1);
   } else if (col >= mat.col) {
-    printf("Column index out of bounds");
+    printf("Column index out of bounds\n");
     exit(1);
   }
   MAT_SET_AT(mat, row, col, val);
@@ -45,7 +45,7 @@ void mat_set(matrix mat, size_t row, size_t col, float val) {
 
 void mat_print(matrix mat) {
   if (mat.ele == NULL) {
-    printf("Input matrix cannot be empty");
+    printf("Input matrix cannot be empty\n");
     exit(1);
   }
   for (size_t i = 0; i < mat.row; i++) {
@@ -76,7 +76,7 @@ matrix mat_ident(size_t row, size_t col) {
 
 void mat_scale(matrix mat, float val) {
   if (mat.ele == NULL) {
-    printf("Input matrix cannot be empty");
+    printf("Input matrix cannot be empty\n");
     exit(1);
   }
   for (size_t i = 0; i < mat.row; i++) {
@@ -88,13 +88,13 @@ void mat_scale(matrix mat, float val) {
 
 void mat_add(matrix dst, matrix src) {
   if (dst.ele == NULL) {
-    printf("Destination matrix cannot be empty");
+    printf("Destination matrix cannot be empty\n");
     exit(1);
   } else if (src.ele == NULL) {
-    printf("Source matrix cannot be empty");
+    printf("Source matrix cannot be empty\n");
     exit(1);
   } else if (dst.dim != src.dim) {
-    printf("Both matrices must have the same dimension");
+    printf("Both matrices must have the same dimension\n");
     exit(1);
   }
   for (size_t i = 0; i < dst.row; i++) {
@@ -106,13 +106,13 @@ void mat_add(matrix dst, matrix src) {
 
 void mat_sub(matrix dst, matrix src) {
   if (dst.ele == NULL) {
-    printf("Destination matrix cannot be empty");
+    printf("Destination matrix cannot be empty\n");
     exit(1);
   } else if (src.ele == NULL) {
-    printf("Source matrix cannot be empty");
+    printf("Source matrix cannot be empty\n");
     exit(1);
   } else if (dst.dim != src.dim) {
-    printf("Both matrices must have the same dimension");
+    printf("Both matrices must have the same dimension\n");
     exit(1);
   }
   for (size_t i = 0; i < dst.row; i++) {
@@ -122,7 +122,30 @@ void mat_sub(matrix dst, matrix src) {
   }
 }
 
-matrix mat_mult(matrix dst, matrix src);
+matrix mat_mult(matrix dst, matrix src) {
+  if (dst.col != src.row) {
+    printf("Row dimension of destintation matrix does not match the column "
+           "dimension of the source matrix\n");
+    exit(1);
+  } else if (dst.ele == NULL) {
+    printf("Destination matrix cannot be empty\n");
+    exit(1);
+  } else if (src.ele == NULL) {
+    printf("Source matrix cannot be empty\n");
+    exit(1);
+  }
+  matrix ret = mat_alloc(dst.row, src.col);
+  for (size_t i = 0; i < ret.col; i++) {
+    for (size_t j = 0; j < ret.row; j++) {
+      for (size_t k = 0; k < src.row; k++) {
+        MAT_SET_AT(ret, i, j, MAT_GET_AT(dst, i, k) * MAT_GET_AT(src, k, j));
+      }
+    }
+  }
+  return ret;
+}
+
+int mat_are_equal(matrix mat1, matrix mat2);
 
 int mat_is_invertible(matrix mat);
 

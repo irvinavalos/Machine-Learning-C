@@ -2,7 +2,7 @@
 
 vector vec_alloc(size_t dim) {
   if (dim <= 0) {
-    printf("Invalid dimension, %zu must be greater than or equal to 0", dim);
+    printf("Invalid dimension, %zu must be greater than or equal to 0\n", dim);
     exit(EXIT_FAILURE);
   }
   vector vec;
@@ -13,7 +13,7 @@ vector vec_alloc(size_t dim) {
 
 void vec_free(vector vec) {
   if (vec.ele == NULL) {
-    printf("Input vector must not be empty");
+    printf("Input vector must not be empty\n");
     exit(EXIT_FAILURE);
   }
   vec.dim = 0;
@@ -23,7 +23,7 @@ void vec_free(vector vec) {
 
 float vec_get(vector vec, size_t idx) {
   if (idx >= vec.dim) {
-    printf("Index out of bounds");
+    printf("Index out of bounds\n");
     exit(EXIT_FAILURE);
   }
   return vec.ele[idx];
@@ -31,7 +31,7 @@ float vec_get(vector vec, size_t idx) {
 
 void vec_print(vector vec) {
   if (vec.ele == NULL) {
-    printf("Input vector must not be empty");
+    printf("Input vector must not be empty\n");
     exit(EXIT_FAILURE);
   }
   printf("(");
@@ -47,10 +47,10 @@ void vec_print(vector vec) {
 
 void vec_set(vector vec, size_t idx, float val) {
   if (idx >= vec.dim) {
-    printf("Index out of bounds");
+    printf("Index out of bounds\n");
     exit(EXIT_FAILURE);
   } else if (vec.ele == NULL) {
-    printf("Input vector must not be empty");
+    printf("Input vector must not be empty\n");
     exit(EXIT_FAILURE);
   }
   VEC_SET_AT(vec, idx, val);
@@ -58,7 +58,7 @@ void vec_set(vector vec, size_t idx, float val) {
 
 vector vec_ones(size_t dim) {
   if (dim <= 0) {
-    printf("Invalid dimension, %zu must be greater than or equal to 0", dim);
+    printf("Invalid dimension, %zu must be greater than or equal to 0\n", dim);
     exit(EXIT_FAILURE);
   }
   vector vec = vec_alloc(dim);
@@ -70,7 +70,7 @@ vector vec_ones(size_t dim) {
 
 void vec_scale(vector vec, float val) {
   if (vec.ele == NULL) {
-    printf("Input vector must not be empty");
+    printf("Input vector must not be empty\n");
     exit(EXIT_FAILURE);
   }
   for (size_t i = 0; i < vec.dim; i++) {
@@ -80,13 +80,13 @@ void vec_scale(vector vec, float val) {
 
 void vec_add(vector dst, vector src) {
   if (dst.ele == NULL) {
-    printf("Destination vector must not be empty");
+    printf("Destination vector must not be empty\n");
     exit(EXIT_FAILURE);
   } else if (src.ele == NULL) {
-    printf("Source vector must not be empty");
+    printf("Source vector must not be empty\n");
     exit(EXIT_FAILURE);
   } else if (dst.dim != src.dim) {
-    printf("Both vectors must have the same dimension");
+    printf("Both vectors must have the same dimension\n");
     exit(EXIT_FAILURE);
   }
   for (size_t i = 0; i < dst.dim; i++) {
@@ -96,13 +96,13 @@ void vec_add(vector dst, vector src) {
 
 void vec_sub(vector dst, vector src) {
   if (dst.ele == NULL) {
-    printf("Destination vector must not be empty");
+    printf("Destination vector must not be empty\n");
     exit(EXIT_FAILURE);
   } else if (src.ele == NULL) {
-    printf("Source vector must not be empty");
+    printf("Source vector must not be empty\n");
     exit(EXIT_FAILURE);
   } else if (dst.dim != src.dim) {
-    printf("Both vectors must have the same dimension");
+    printf("Both vectors must have the same dimension\n");
     exit(EXIT_FAILURE);
   }
   for (size_t i = 0; i < dst.dim; i++) {
@@ -112,13 +112,13 @@ void vec_sub(vector dst, vector src) {
 
 float vec_dot(vector vec1, vector vec2) {
   if (vec1.ele == NULL) {
-    printf("Vector 1 must not be empty");
+    printf("Vector 1 must not be empty\n");
     exit(EXIT_FAILURE);
   } else if (vec2.ele == NULL) {
-    printf("Vector 2 must not be empty");
+    printf("Vector 2 must not be empty\n");
     exit(EXIT_FAILURE);
   } else if (vec1.dim != vec2.dim) {
-    printf("Both vectors must have the same dimension");
+    printf("Both vectors must have the same dimension\n");
     exit(EXIT_FAILURE);
   }
   float ret = 0.0;

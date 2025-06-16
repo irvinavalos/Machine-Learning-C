@@ -34,6 +34,8 @@ void mat_sub(matrix dst, matrix src);
 
 matrix mat_mult(matrix dst, matrix src);
 
+int mat_are_equal(matrix mat1, matrix mat2);
+
 int mat_is_invertible(matrix mat);
 
 matrix mat_get_inverse(matrix mat);
