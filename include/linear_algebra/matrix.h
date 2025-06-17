@@ -52,7 +52,6 @@ vector mat_get_col(matrix mat, size_t col);
 
 void mat_set_row(matrix mat, vector src, size_t row);
 
-void mat_set_col(matrix mat, vector src, size_t row);
-
+void mat_set_col(matrix mat, vector src, size_t col);
 
 #endif // !MATRIX_H
