@@ -12,8 +12,7 @@ typedef struct {
   float *data;
 } matrix;
 
-#define MAT_GET_AT(m, r, c) (m.data[r * m.cols + c])
-#define MAT_SET_AT(m, r, c, v) m.data[r * m.cols + c] = v
+#define MAT_INDEX(m, r, c) (r) * (m)->cols + (c)
 
 mat_status mat_alloc(matrix *mat, size_t ro, size_t co);
 
@@ -23,9 +22,9 @@ matrix mat_zeros(size_t ro, size_t co);
 
 mat_status mat_copy(matrix *dst, const matrix *src);
 
-float mat_get(matrix mat, size_t row, size_t col);
+static float mat_get(const matrix *mat, size_t ro, size_t co);
 
-void mat_set(matrix mat, size_t row, size_t col, float val);
+static void mat_set(matrix *mat, size_t ro, size_t co, float val);
 
 void mat_print(matrix mat);
 
@@ -41,7 +40,7 @@ mat_status mat_add(matrix *dst, matrix *src);
 
 mat_status mat_sub(matrix *dst, matrix *src);
 
-matrix mat_mult(matrix dst, matrix src);
+mat_status mat_mult(matrix *out, const matrix *mat1, const matrix *mat2);
 
 int mat_are_equal(matrix mat1, matrix mat2);
 

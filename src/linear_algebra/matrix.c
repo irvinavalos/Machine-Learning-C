@@ -57,26 +57,12 @@ mat_status mat_copy(matrix *dst, const matrix *src) {
   return MAT_OK;
 }
 
-float mat_get(matrix mat, size_t row, size_t col) {
-  if (row >= mat.rows) {
-    printf("Row index out of bounds\n");
-    exit(1);
-  } else if (col >= mat.cols) {
-    printf("Column index out of bounds\n");
-    exit(1);
-  }
-  return MAT_GET_AT(mat, row, col);
+static float mat_get(const matrix *mat, size_t ro, size_t co) {
+  return mat->data[MAT_INDEX(mat, ro, co)];
 }
 
-void mat_set(matrix mat, size_t row, size_t col, float val) {
-  if (row >= mat.rows) {
-    printf("Row index out of bounds\n");
-    exit(1);
-  } else if (col >= mat.cols) {
-    printf("Column index out of bounds\n");
-    exit(1);
-  }
-  MAT_SET_AT(mat, row, col, val);
+static void mat_set(matrix *mat, size_t ro, size_t co, float val) {
+  mat->data[MAT_INDEX(mat, ro, co)] = val;
 }
 
 void mat_print(matrix mat) {
@@ -173,27 +159,32 @@ mat_status mat_sub(matrix *dst, matrix *src) {
   return MAT_OK;
 }
 
-matrix mat_mult(matrix dst, matrix src) {
-  if (dst.cols != src.rows) {
-    printf("Row dimension of destintation matrix does not match the column "
-           "dimension of the source matrix\n");
-    exit(1);
-  } else if (dst.data == NULL) {
-    printf("Destination matrix cannot be empty\n");
-    exit(1);
-  } else if (src.data == NULL) {
-    printf("Source matrix cannot be empty\n");
-    exit(1);
+mat_status mat_mult(matrix *out, const matrix *mat1, const matrix *mat2) {
+  if (!(out && mat1 && mat2)) {
+    return MAT_ERR_NULL;
   }
-  matrix ret = mat_alloc(dst.rows, src.cols);
-  for (size_t i = 0; i < ret.cols; i++) {
-    for (size_t j = 0; j < ret.rows; j++) {
-      for (size_t k = 0; k < src.rows; k++) {
-        MAT_SET_AT(ret, i, j, MAT_GET_AT(dst, i, k) * MAT_GET_AT(src, k, j));
-      }
+  if (!(mat1->data && mat2->data)) {
+    return MAT_ERR_NULL;
+  }
+  if (!(mat1->cols == mat2->rows)) {
+    return MAT_ERR_SHAPE;
+  }
+  if (out->rows != mat1->rows || out->cols != mat2->cols) {
+    mat_free(out);
+    if (!(mat_alloc(out, mat1->rows, mat2->cols) == MAT_OK)) {
+      return MAT_ERR_ALLOC;
     }
   }
-  return ret;
+  for (size_t i = 0; i < out->rows; i++) {
+    for (size_t j = 0; j < out->cols; j++) {
+      float sum = 0.0;
+      for (size_t k = 0; k < mat1->cols; i++) {
+        sum += mat_get(mat1, i, k) * mat_get(mat2, k, j);
+      }
+      mat_set(out, i, j, sum);
+    }
+  }
+  return MAT_OK;
 }
 
 int mat_are_equal(matrix mat1, matrix mat2) {
