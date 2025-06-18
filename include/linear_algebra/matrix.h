@@ -1,20 +1,20 @@
 #ifndef MATRIX_H
-
 #define MATRIX_H
 
 #include "vector.h"
+#include <stdint.h>
+#include "matrix_status.h"
 
 typedef struct {
-  float *ele;
-  size_t row;
-  size_t col;
-  size_t dim;
+  size_t rows;
+  size_t cols;
+  float *data;
 } matrix;
 
-#define MAT_GET_AT(m, r, c) (m.ele[r * m.col + c])
-#define MAT_SET_AT(m, r, c, val) m.ele[r * m.col + c] = val
+#define MAT_GET_AT(m, r, c) (m.data[r * m.cols + c])
+#define MAT_SET_AT(m, r, c, v) m.data[r * m.cols + c] = v
 
-matrix mat_alloc(size_t row, size_t col);
+mat_status mat_alloc(matrix *mat, size_t ro, size_t co);
 
 void mat_free(matrix mat);
 
