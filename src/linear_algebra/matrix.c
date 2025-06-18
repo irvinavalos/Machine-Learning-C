@@ -132,6 +132,13 @@ mat_status mat_apply(matrix *mat, float (*f)(float)) {
   return MAT_OK;
 }
 
+mat_status mat_eq_shape(matrix *mat1, matrix *mat2) {
+  if (mat1->rows == mat2->rows && mat1->cols == mat2->cols) {
+    return MAT_OK;
+  }
+  return MAT_ERR_SHAPE;
+}
+
 void mat_add(matrix dst, matrix src) {
   if (dst.data == NULL) {
     printf("Destination matrix cannot be empty\n");
