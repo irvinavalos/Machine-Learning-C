@@ -2,8 +2,8 @@
 
 #define MNIST_DATA_H
 
-#include <stdio.h>
-#include <stdlib.h>
+#include "matrix.h"
+
 #include <stdint.h>
 
 typedef struct {
@@ -18,7 +18,9 @@ typedef struct {
   uint8_t *label;
 } mnist_label;
 
-int mnist_load_image(const char *path, mnist_image *out);
+static uint32_t read_be32(FILE *fp);
+
+matrix mnist_load_image(const char *img_file, size_t idx, int normalize);
 
 int mnist_load_label(const char *path, mnist_label *out);
 
