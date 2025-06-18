@@ -187,77 +187,62 @@ mat_status mat_mult(matrix *out, const matrix *mat1, const matrix *mat2) {
   return MAT_OK;
 }
 
-int mat_are_equal(matrix mat1, matrix mat2) {
-  if (mat1.cols > mat2.cols) {
-    printf("Number of columns in matrix 1 is greater than matrix 2\n");
-    exit(1);
-  } else if (mat1.cols < mat2.cols) {
-    printf("Number of columns in matrix 2 is greater than matrix 1\n");
-    exit(1);
-  } else if (mat1.rows > mat2.rows) {
-    printf("Number of rows in matrix 1 is greater than matrix 2\n");
-    exit(1);
-  } else if (mat1.rows < mat2.rows) {
-    printf("Number of rows in matrix 2 is greater than matrix 1\n");
-    exit(1);
-  } else if (mat1.data == NULL) {
-    printf("Matrix 1 cannot be empty\n");
-    exit(1);
-  } else if (mat2.data == NULL) {
-    printf("Matrix 1 cannot be empty\n");
-    exit(1);
+bool mat_equal(const matrix *mat1, const matrix *mat2, float eps) {
+  if (!mat1 || !mat2 || !mat1->data || !mat2->data) {
+    return false;
   }
-  int ret = 0;
-  for (size_t i = 0; i < mat1.rows; i++) {
-    for (size_t j = 0; j < mat1.cols; j++) {
-      float val1 = MAT_GET_AT(mat1, i, j);
-      float val2 = MAT_GET_AT(mat2, i, j);
-      if (val1 != val2) {
-        ret = 1;
-        return ret;
-      }
+  if (mat1->rows != mat2->rows || mat1->cols != mat2->cols) {
+    return false;
+  }
+  size_t dim = mat1->rows * mat1->cols;
+  for (size_t i = 0; i < dim; i++) {
+    if (fabs(mat1->data[i] - mat2->data[i]) > eps) {
+      return false;
     }
   }
-  return ret;
+  return true;
 }
 
-int mat_is_invertible(matrix mat) {
-  if (mat.data == NULL) {
-    printf("Matrix cannot be empty\n");
-    exit(1);
+bool mat_is_invertible(const matrix *mat) {
+  if (!mat || !mat->data) {
+    return false;
   }
-  int ret = 0;
-  if (mat.dim == 4) {
-    float res = mat.data[0] * mat.data[3] - mat.data[1] * mat.data[2];
-    if (res > 0) {
-      ret = 1;
-    }
+  if (mat->rows != mat->cols) {
+    return false;
   }
-  // TODO: mat.dim > 4
-  return ret;
+  if (mat->rows == 2) {
+    float det = mat->data[0] * mat->data[3] - mat->data[1] * mat->data[2];
+    return (fabsf(det) > 1e-6f);
+  }
+  // TODO: determinant for matrices larger than 2x2
+  return false;
 }
 
-matrix mat_get_inverse(matrix mat) {
-  if (mat.data == NULL) {
-    printf("Matrix cannot be empty\n");
-    exit(1);
+mat_status mat_inverse_2x2(matrix *out, const matrix *src) {
+  if (!(out && src)) {
+    return MAT_ERR_NULL;
   }
-  matrix ret = mat_alloc(mat.rows, mat.cols);
-  if (mat.dim == 4) {
-    float det = mat.data[0] * mat.data[3] - mat.data[1] * mat.data[2];
-    ret.data[0] = mat.data[3];
-    ret.data[1] = -1.0 * mat.data[1];
-    ret.data[2] = -1.0 * mat.data[2];
-    ret.data[0] = mat.data[0];
-    for (size_t i = 0; i < ret.rows; i++) {
-      for (size_t j = 0; j < ret.cols; j++) {
-        float val = MAT_GET_AT(ret, i, j);
-        MAT_SET_AT(mat, i, j, 1.0 / det * val);
-      }
+  if (!(src->data)) {
+    return MAT_ERR_NULL;
+  }
+  if (!(src->rows == 2 && src->cols == 2)) {
+    return MAT_ERR_SHAPE;
+  }
+  float det = src->data[0] * src->data[3] - src->data[1] * src->data[2];
+  if (!(fabsf(det) > 1e-6f)) {
+    return MAT_ERR_SINGULAR;
+  }
+  if (out->rows != 2 || out->cols != 2) {
+    mat_free(out);
+    if (!(mat_alloc(out, 2, 2) == MAT_OK)) {
+      return MAT_ERR_ALLOC;
     }
   }
-  // TODO: mat.dim > 4
-  return ret;
+  out->data[0] = src->data[3] / det;
+  out->data[1] = -src->data[1] / det;
+  out->data[2] = -src->data[2] / det;
+  out->data[3] = src->data[0] / det;
+  return MAT_OK;
 }
 
 matrix mat_transpose(matrix mat);

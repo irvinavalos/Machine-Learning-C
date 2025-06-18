@@ -5,6 +5,7 @@
 #include "vector.h"
 #include <stdint.h>
 #include <string.h>
+#include <stdbool.h>
 
 typedef struct {
   size_t rows;
@@ -42,11 +43,11 @@ mat_status mat_sub(matrix *dst, matrix *src);
 
 mat_status mat_mult(matrix *out, const matrix *mat1, const matrix *mat2);
 
-int mat_are_equal(matrix mat1, matrix mat2);
+bool mat_equal(const matrix *mat1, const matrix *mat2, float eps);
 
-int mat_is_invertible(matrix mat);
+bool mat_is_invertible(const matrix *mat);
 
-matrix mat_get_inverse(matrix mat);
+mat_status mat_inverse_2x2(matrix *out, const matrix *src);
 
 matrix mat_transpose(matrix mat);
 
