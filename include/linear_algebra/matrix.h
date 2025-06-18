@@ -29,9 +29,11 @@ void mat_set(matrix mat, size_t row, size_t col, float val);
 
 void mat_print(matrix mat);
 
-matrix mat_ident(size_t row, size_t col);
+// matrix mat_ident(size_t row, size_t col);
 
-void mat_scale(matrix mat, float val);
+mat_status mat_scale(matrix *mat, float sca);
+
+mat_status mat_apply(matrix *mat, float (*f)(float));
 
 void mat_add(matrix dst, matrix src);
 

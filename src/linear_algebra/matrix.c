@@ -96,30 +96,40 @@ void mat_print(matrix mat) {
   }
 }
 
-matrix mat_ident(size_t row, size_t col) {
-  matrix mat = mat_alloc(row, col);
-  for (size_t i = 0; i < row; i++) {
-    for (size_t j = 0; j < col; j++) {
-      if (i == j) {
-        MAT_SET_AT(mat, i, j, 1.0);
-      } else {
-        MAT_SET_AT(mat, i, j, 0.0);
-      }
-    }
+// matrix mat_ident(size_t row, size_t col) {
+//   matrix mat = mat_alloc(row, col);
+//   for (size_t i = 0; i < row; i++) {
+//     for (size_t j = 0; j < col; j++) {
+//       if (i == j) {
+//         MAT_SET_AT(mat, i, j, 1.0);
+//       } else {
+//         MAT_SET_AT(mat, i, j, 0.0);
+//       }
+//     }
+//   }
+//   return mat;
+// }
+
+mat_status mat_scale(matrix *mat, float sca) {
+  if (!(mat && mat->data)) {
+    return MAT_ERR_NULL;
   }
-  return mat;
+  size_t dim = mat->rows * mat->cols;
+  for (size_t i = 0; i < dim; i++) {
+    mat->data[i] *= sca;
+  }
+  return MAT_OK;
 }
 
-void mat_scale(matrix mat, float val) {
-  if (mat.data == NULL) {
-    printf("Input matrix cannot be empty\n");
-    exit(1);
+mat_status mat_apply(matrix *mat, float (*f)(float)) {
+  if (!(mat && mat->data && f)) {
+    return MAT_ERR_NULL;
   }
-  for (size_t i = 0; i < mat.rows; i++) {
-    for (size_t j = 0; j < mat.cols; j++) {
-      MAT_SET_AT(mat, i, j, MAT_GET_AT(mat, i, j) * val);
-    }
+  size_t dim = mat->rows * mat->cols;
+  for (size_t i = 0; i < dim; i++) {
+    mat->data[i] = f(mat->data[i]);
   }
+  return MAT_OK;
 }
 
 void mat_add(matrix dst, matrix src) {
