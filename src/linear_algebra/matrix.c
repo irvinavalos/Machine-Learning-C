@@ -1,4 +1,5 @@
 #include "matrix.h"
+#include <string.h>
 
 mat_status mat_alloc(matrix *mat, size_t ro, size_t co) {
   if (!mat) {
@@ -27,6 +28,14 @@ void mat_free(matrix *mat) {
   mat->rows = 0;
   mat->cols = 0;
   mat->data = NULL;
+}
+
+matrix mat_zeros(size_t ro, size_t co) {
+  matrix m = {0};
+  if (mat_alloc(&m, ro, co) == MAT_OK) {
+    memset(m.data, 0, ro * co * sizeof(float));
+  }
+  return m;
 }
 
 float mat_get(matrix mat, size_t row, size_t col) {

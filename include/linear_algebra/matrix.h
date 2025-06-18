@@ -4,6 +4,7 @@
 #include "matrix_status.h"
 #include "vector.h"
 #include <stdint.h>
+#include <string.h>
 
 typedef struct {
   size_t rows;
@@ -17,6 +18,8 @@ typedef struct {
 mat_status mat_alloc(matrix *mat, size_t ro, size_t co);
 
 void mat_free(matrix *mat);
+
+matrix mat_zeros(size_t ro, size_t co);
 
 float mat_get(matrix mat, size_t row, size_t col);
 
