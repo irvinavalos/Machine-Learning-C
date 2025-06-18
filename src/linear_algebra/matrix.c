@@ -19,15 +19,14 @@ mat_status mat_alloc(matrix *mat, size_t ro, size_t co) {
   return MAT_OK;
 }
 
-void mat_free(matrix mat) {
-  if (mat.data == NULL) {
-    printf("Input matrix cannot be empty\n");
-    exit(1);
+void mat_free(matrix *mat) {
+  if (!mat || !mat->data) {
+    return;
   }
-  mat.rows = 0;
-  mat.cols = 0;
-  free(mat.data);
-  mat.data = NULL;
+  free(mat->data);
+  mat->rows = 0;
+  mat->cols = 0;
+  mat->data = NULL;
 }
 
 float mat_get(matrix mat, size_t row, size_t col) {

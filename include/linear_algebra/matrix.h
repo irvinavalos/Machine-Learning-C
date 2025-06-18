@@ -1,9 +1,9 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
+#include "matrix_status.h"
 #include "vector.h"
 #include <stdint.h>
-#include "matrix_status.h"
 
 typedef struct {
   size_t rows;
@@ -16,7 +16,7 @@ typedef struct {
 
 mat_status mat_alloc(matrix *mat, size_t ro, size_t co);
 
-void mat_free(matrix mat);
+void mat_free(matrix *mat);
 
 float mat_get(matrix mat, size_t row, size_t col);
 
