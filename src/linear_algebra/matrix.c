@@ -139,40 +139,38 @@ mat_status mat_eq_shape(matrix *mat1, matrix *mat2) {
   return MAT_ERR_SHAPE;
 }
 
-void mat_add(matrix dst, matrix src) {
-  if (dst.data == NULL) {
-    printf("Destination matrix cannot be empty\n");
-    exit(1);
-  } else if (src.data == NULL) {
-    printf("Source matrix cannot be empty\n");
-    exit(1);
-  } else if (dst.dim != src.dim) {
-    printf("Both matrices must have the same dimension\n");
-    exit(1);
+mat_status mat_add(matrix *dst, matrix *src) {
+  if (!(dst && src)) {
+    return MAT_ERR_NULL;
   }
-  for (size_t i = 0; i < dst.rows; i++) {
-    for (size_t j = 0; j < dst.cols; j++) {
-      MAT_SET_AT(dst, i, j, MAT_GET_AT(dst, i, j) + MAT_GET_AT(src, i, j));
-    }
+  if (!(dst->data && src->data)) {
+    return MAT_ERR_NULL;
   }
+  if (!(mat_eq_shape(dst, src) == MAT_OK)) {
+    return MAT_ERR_SHAPE;
+  }
+  size_t dim = dst->rows * dst->cols;
+  for (size_t i = 0; i < dim; i++) {
+    dst->data[i] += src->data[i];
+  }
+  return MAT_OK;
 }
 
-void mat_sub(matrix dst, matrix src) {
-  if (dst.data == NULL) {
-    printf("Destination matrix cannot be empty\n");
-    exit(1);
-  } else if (src.data == NULL) {
-    printf("Source matrix cannot be empty\n");
-    exit(1);
-  } else if (dst.dim != src.dim) {
-    printf("Both matrices must have the same dimension\n");
-    exit(1);
+mat_status mat_sub(matrix *dst, matrix *src) {
+  if (!(dst && src)) {
+    return MAT_ERR_NULL;
   }
-  for (size_t i = 0; i < dst.rows; i++) {
-    for (size_t j = 0; j < dst.cols; j++) {
-      MAT_SET_AT(dst, i, j, MAT_GET_AT(dst, i, j) - MAT_GET_AT(src, i, j));
-    }
+  if (!(dst->data && src->data)) {
+    return MAT_ERR_NULL;
   }
+  if (!(mat_eq_shape(dst, src) == MAT_OK)) {
+    return MAT_ERR_SHAPE;
+  }
+  size_t dim = dst->rows * dst->cols;
+  for (size_t i = 0; i < dim; i++) {
+    dst->data[i] -= src->data[i];
+  }
+  return MAT_OK;
 }
 
 matrix mat_mult(matrix dst, matrix src) {

@@ -37,9 +37,9 @@ mat_status mat_apply(matrix *mat, float (*f)(float));
 
 mat_status mat_eq_shape(matrix *mat1, matrix *mat2);
 
-void mat_add(matrix dst, matrix src);
+mat_status mat_add(matrix *dst, matrix *src);
 
-void mat_sub(matrix dst, matrix src);
+mat_status mat_sub(matrix *dst, matrix *src);
 
 matrix mat_mult(matrix dst, matrix src);
 
