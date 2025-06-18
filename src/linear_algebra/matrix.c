@@ -57,13 +57,9 @@ mat_status mat_copy(matrix *dst, const matrix *src) {
   return MAT_OK;
 }
 
-static float mat_get(const matrix *mat, size_t ro, size_t co) {
-  return mat->data[MAT_INDEX(mat, ro, co)];
-}
+// static float mat_get(const matrix *mat, size_t ro, size_t co);
 
-static void mat_set(matrix *mat, size_t ro, size_t co, float val) {
-  mat->data[MAT_INDEX(mat, ro, co)] = val;
-}
+// static void mat_set(matrix *mat, size_t ro, size_t co, float val);
 
 void mat_print(matrix mat) {
   if (mat.data == NULL) {
@@ -74,9 +70,9 @@ void mat_print(matrix mat) {
     printf("|");
     for (size_t j = 0; j < mat.cols; j++) {
       if (j == mat.cols - 1) {
-        printf("%.2f|\n", MAT_GET_AT(mat, i, j));
+        printf("%.2f|\n", mat_get(&mat, i, j));
       } else {
-        printf("%.2f ", MAT_GET_AT(mat, i, j));
+        printf("%.2f ", mat_get(&mat, i, j));
       }
     }
   }
@@ -249,76 +245,10 @@ matrix mat_transpose(matrix mat);
 
 int mat_is_symmetric(matrix mat);
 
-vector mat_get_row(matrix mat, size_t row) {
-  if (row >= mat.rows) {
-    printf("Out of bounds row index\n");
-    exit(1);
-  } else if (mat.data == NULL) {
-    printf("Matrix cannot be empty\n");
-    exit(1);
-  }
-  vector ret = vec_alloc(mat.cols);
-  for (size_t i = 0; i < mat.cols; i++) {
-    float val = MAT_GET_AT(mat, row, i);
-    VEC_SET_AT(ret, i, val);
-  }
-  return ret;
-}
+vector mat_get_row(matrix mat, size_t row);
 
-vector mat_get_col(matrix mat, size_t col) {
-  if (col >= mat.cols) {
-    printf("Out of bounds row index\n");
-    exit(1);
-  } else if (mat.data == NULL) {
-    printf("Matrix cannot be empty\n");
-    exit(1);
-  }
-  vector ret = vec_alloc(mat.rows);
-  for (size_t i = 0; i < mat.rows; i++) {
-    float val = MAT_GET_AT(mat, i, col);
-    VEC_SET_AT(ret, i, val);
-  }
-  return ret;
-}
+vector mat_get_col(matrix mat, size_t col);
 
-void mat_set_row(matrix mat, vector src, size_t row) {
-  if (mat.data == NULL) {
-    printf("Matrix cannot be empty\n");
-    exit(1);
-  } else if (src.ele == NULL) {
-    printf("Vector cannot be empty\n");
-    exit(1);
-  } else if (row >= mat.rows) {
-    printf("Out of bounds row index\n");
-    exit(1);
-  } else if (mat.cols != src.dim) {
-    printf("Number of column entries in matrix does not match dimension of the "
-           "row vector\n");
-    exit(1);
-  }
-  for (size_t i = 0; i < mat.cols; i++) {
-    float val = VEC_GET_AT(src, i);
-    MAT_SET_AT(mat, row, i, val);
-  }
-}
+void mat_set_row(matrix mat, vector src, size_t row);
 
-void mat_set_col(matrix mat, vector src, size_t col) {
-  if (mat.data == NULL) {
-    printf("Matrix cannot be empty\n");
-    exit(1);
-  } else if (src.ele == NULL) {
-    printf("Vector cannot be empty\n");
-    exit(1);
-  } else if (col >= mat.cols) {
-    printf("Out of bounds column index\n");
-    exit(1);
-  } else if (mat.rows != src.dim) {
-    printf("Number of row entries in matrix does not match dimension of the "
-           "column vector\n");
-    exit(1);
-  }
-  for (size_t i = 0; i < mat.rows; i++) {
-    float val = VEC_GET_AT(src, i);
-    MAT_SET_AT(mat, i, col, val);
-  }
-}
+void mat_set_col(matrix mat, vector src, size_t col);

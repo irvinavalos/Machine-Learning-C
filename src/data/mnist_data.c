@@ -33,7 +33,7 @@ matrix mnist_load_image(const char *img_file, size_t idx, int normalize) {
     perror("fseek");
     exit(EXIT_FAILURE);
   }
-  matrix img = mat_alloc(n_rows, n_cols);
+  matrix img = mat_zeros(n_rows, n_cols);
   uint8_t *buf = malloc(img_size);
   if (!buf) {
     perror("malloc");
@@ -48,7 +48,7 @@ matrix mnist_load_image(const char *img_file, size_t idx, int normalize) {
     for (size_t j = 0; j < n_cols; j++) {
       uint8_t px = buf[i * n_cols + j];
       float val = normalize ? (float)px / 255.0f : (float)px;
-      MAT_SET_AT(img, i, j, val);
+      mat_set(&img, i, j, val);
     }
   }
   free(buf);

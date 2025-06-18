@@ -23,9 +23,13 @@ matrix mat_zeros(size_t ro, size_t co);
 
 mat_status mat_copy(matrix *dst, const matrix *src);
 
-static float mat_get(const matrix *mat, size_t ro, size_t co);
+static inline float mat_get(const matrix *mat, size_t ro, size_t co) {
+  return mat->data[MAT_INDEX(mat, ro, co)];
+}
 
-static void mat_set(matrix *mat, size_t ro, size_t co, float val);
+static inline void mat_set(matrix *mat, size_t ro, size_t co, float val) {
+  mat->data[MAT_INDEX(mat, ro, co)] = val;
+}
 
 void mat_print(matrix mat);
 
