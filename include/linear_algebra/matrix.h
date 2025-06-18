@@ -11,19 +11,8 @@ typedef struct {
   size_t dim;
 } matrix;
 
-typedef enum {
-  MAT_OK = 0,
-  MAT_ERR_OOB,
-  MAT_ERR_SHAPE,
-  MAT_ERR_ALLOC,
-  MAT_ERR_NULL,
-  MAT_ERR_SINGULAR
-} mat_status;
-
 #define MAT_GET_AT(m, r, c) (m.ele[r * m.col + c])
 #define MAT_SET_AT(m, r, c, val) m.ele[r * m.col + c] = val
-
-const char *mat_strerror(mat_status stat);
 
 matrix mat_alloc(size_t row, size_t col);
 
