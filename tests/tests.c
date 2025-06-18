@@ -31,9 +31,8 @@ int main(void) {
   // mat_scale(n, 2.0);
   // mat_print(n);
 
-  matrix img = mnist_load_image("tests/mnist/train-images-idx3-ubyte/train-images-idx3-ubyte", 0, 1);
-  mat_print(img);
-  mat_free(img);
+  matrix m = mat_zeros(10, 10);
+  mat_print(m);
 
   return 0;
 }

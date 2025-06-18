@@ -21,13 +21,13 @@ void mat_free(matrix *mat);
 
 matrix mat_zeros(size_t ro, size_t co);
 
+mat_status mat_copy(matrix *dst, const matrix *src);
+
 float mat_get(matrix mat, size_t row, size_t col);
 
 void mat_set(matrix mat, size_t row, size_t col, float val);
 
 void mat_print(matrix mat);
-
-matrix mat_copy(matrix mat);
 
 matrix mat_ident(size_t row, size_t col);
 

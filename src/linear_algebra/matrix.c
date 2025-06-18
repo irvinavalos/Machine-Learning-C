@@ -1,5 +1,4 @@
 #include "matrix.h"
-#include <string.h>
 
 mat_status mat_alloc(matrix *mat, size_t ro, size_t co) {
   if (!mat) {
@@ -36,6 +35,26 @@ matrix mat_zeros(size_t ro, size_t co) {
     memset(m.data, 0, ro * co * sizeof(float));
   }
   return m;
+}
+
+mat_status mat_copy(matrix *dst, const matrix *src) {
+  if (!(dst && src)) {
+    return MAT_ERR_NULL;
+  }
+  if (!(src->data)) {
+    return MAT_ERR_NULL;
+  }
+  if (dst == src) {
+    return MAT_OK;
+  }
+  if (dst->rows != src->rows || dst->cols != src->cols) {
+    mat_free(dst);
+    if (!(mat_alloc(dst, src->rows, src->cols) == MAT_OK)) {
+      return MAT_ERR_ALLOC;
+    }
+  }
+  memcpy(dst->data, src->data, src->rows * src->cols * sizeof(*dst->data));
+  return MAT_OK;
 }
 
 float mat_get(matrix mat, size_t row, size_t col) {
@@ -75,20 +94,6 @@ void mat_print(matrix mat) {
       }
     }
   }
-}
-
-matrix mat_copy(matrix mat) {
-  if (mat.data == NULL) {
-    printf("Input matrix cannot be empty\n");
-    exit(1);
-  }
-  matrix ret = mat_alloc(mat.rows, mat.rows);
-  for (size_t i = 0; i < mat.rows; i++) {
-    for (size_t j = 0; j < mat.cols; j++) {
-      MAT_SET_AT(ret, i, j, MAT_GET_AT(mat, i, j));
-    }
-  }
-  return ret;
 }
 
 matrix mat_ident(size_t row, size_t col) {
