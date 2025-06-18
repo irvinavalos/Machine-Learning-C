@@ -52,9 +52,9 @@ void mat_print(matrix mat) {
     printf("|");
     for (size_t j = 0; j < mat.col; j++) {
       if (j == mat.col - 1) {
-        printf("%f|\n", MAT_GET_AT(mat, i, j));
+        printf("%.2f|\n", MAT_GET_AT(mat, i, j));
       } else {
-        printf("%f ", MAT_GET_AT(mat, i, j));
+        printf("%.2f ", MAT_GET_AT(mat, i, j));
       }
     }
   }

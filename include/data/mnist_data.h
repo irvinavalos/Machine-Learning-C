@@ -18,8 +18,6 @@ typedef struct {
   uint8_t *label;
 } mnist_label;
 
-static uint32_t read_be32(FILE *fp);
-
 matrix mnist_load_image(const char *img_file, size_t idx, int normalize);
 
 int mnist_load_label(const char *path, mnist_label *out);
