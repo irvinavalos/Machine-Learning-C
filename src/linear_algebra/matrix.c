@@ -238,14 +238,24 @@ mat_status mat_inverse_2x2(matrix *out, const matrix *src) {
   return MAT_OK;
 }
 
-matrix mat_transpose(matrix mat);
+mat_status mat_inverse(matrix *out, const matrix *src);
+
+mat_status mat_transpose(matrix *out, const matrix *src) {
+  if (!(out && src)) {
+    return MAT_ERR_NULL;
+  }
+  if (!(src->data)) {
+    return MAT_ERR_NULL;
+  }
+  if (out->rows != src->cols || out->cols != src->rows) {
+    return MAT_ERR_SHAPE;
+  }
+  for (size_t i = 0; i < out->rows; i++) {
+    for (size_t j = 0; j < out->cols; j++) {
+      mat_set(out, j, i, mat_get(src, i, j));
+    }
+  }
+  return MAT_OK;
+}
 
 int mat_is_symmetric(matrix mat);
-
-vector mat_get_row(matrix mat, size_t row);
-
-vector mat_get_col(matrix mat, size_t col);
-
-void mat_set_row(matrix mat, vector src, size_t row);
-
-void mat_set_col(matrix mat, vector src, size_t col);

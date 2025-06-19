@@ -73,16 +73,38 @@ bool mat_is_invertible(const matrix *mat);
 
 mat_status mat_inverse_2x2(matrix *out, const matrix *src);
 
-matrix mat_transpose(matrix mat);
+mat_status mat_inverse(matrix *out, const matrix *src);
+
+mat_status mat_transpose(matrix *out, const matrix *src);
 
 int mat_is_symmetric(matrix mat);
 
-vector mat_get_row(matrix mat, size_t row);
+static inline vector mat_get_row(matrix *mat, size_t ro) {
+  vector v = vec_alloc(mat->cols);
+  for (size_t i = 0; i < mat->cols; i++) {
+    vec_set(v, i, mat_get(mat, ro, i));
+  }
+  return v;
+}
 
-vector mat_get_col(matrix mat, size_t col);
+static inline vector mat_get_col(matrix *mat, size_t co) {
+  vector v = vec_alloc(mat->rows);
+  for (size_t i = 0; i < mat->rows; i++) {
+    vec_set(v, i, mat_get(mat, i, co));
+  }
+  return v;
+}
 
-void mat_set_row(matrix mat, vector src, size_t row);
+static inline void mat_set_row(matrix *dst, vector *src, size_t ro) {
+  for (size_t i = 0; i < dst->cols; i++) {
+    mat_set(dst, ro, i, vec_get(*src, i));
+  }
+}
 
-void mat_set_col(matrix mat, vector src, size_t col);
+static inline void mat_set_col(matrix *dst, vector *src, size_t co) {
+  for (size_t i = 0; i < dst->rows; i++) {
+    mat_set(dst, i, co, vec_get(*src, i));
+  }
+}
 
 #endif // !MATRIX_H
