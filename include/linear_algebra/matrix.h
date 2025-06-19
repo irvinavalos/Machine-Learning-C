@@ -3,9 +3,9 @@
 
 #include "matrix_status.h"
 #include "vector.h"
+#include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
-#include <stdbool.h>
 
 typedef struct {
   size_t rows;
@@ -15,13 +15,17 @@ typedef struct {
 
 #define MAT_INDEX(m, r, c) (r) * (m)->cols + (c)
 
+/*
+ * Allocation/Destruction functionality
+ */
+
 mat_status mat_alloc(matrix *mat, size_t ro, size_t co);
 
 void mat_free(matrix *mat);
 
-matrix mat_zeros(size_t ro, size_t co);
-
-mat_status mat_copy(matrix *dst, const matrix *src);
+/*
+ * Element helper functions
+ */
 
 static inline float mat_get(const matrix *mat, size_t ro, size_t co) {
   return mat->data[MAT_INDEX(mat, ro, co)];
@@ -31,9 +35,25 @@ static inline void mat_set(matrix *mat, size_t ro, size_t co, float val) {
   mat->data[MAT_INDEX(mat, ro, co)] = val;
 }
 
+/*
+ * Matrix creation
+ */
+
+matrix mat_zeros(size_t ro, size_t co);
+
+matrix mat_ident(size_t ro, size_t co);
+
+/*
+ * Utility
+ */
+
+mat_status mat_copy(matrix *dst, const matrix *src);
+
 void mat_print(matrix mat);
 
-// matrix mat_ident(size_t row, size_t col);
+/*
+ * Matrix operations
+ */
 
 mat_status mat_scale(matrix *mat, float sca);
 

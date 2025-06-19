@@ -30,9 +30,24 @@ void mat_free(matrix *mat) {
 }
 
 matrix mat_zeros(size_t ro, size_t co) {
-  matrix m = {0};
+  matrix m;
   if (mat_alloc(&m, ro, co) == MAT_OK) {
-    memset(m.data, 0, ro * co * sizeof(float));
+    memset(m.data, 0, ro * co * sizeof(*m.data));
+  }
+  return m;
+}
+
+matrix mat_ident(size_t ro, size_t co) {
+  matrix m;
+  if (mat_alloc(&m, ro, co) == MAT_OK) {
+    memset(m.data, 0, ro * co * sizeof(*m.data));
+  }
+  for (size_t i = 0; i < m.rows; i++) {
+    for (size_t j = 0; j < m.cols; j++) {
+      if (i == j) {
+        mat_set(&m, i, j, 1.0);
+      }
+    }
   }
   return m;
 }
@@ -57,10 +72,6 @@ mat_status mat_copy(matrix *dst, const matrix *src) {
   return MAT_OK;
 }
 
-// static float mat_get(const matrix *mat, size_t ro, size_t co);
-
-// static void mat_set(matrix *mat, size_t ro, size_t co, float val);
-
 void mat_print(matrix mat) {
   if (mat.data == NULL) {
     printf("Input matrix cannot be empty\n");
@@ -77,20 +88,6 @@ void mat_print(matrix mat) {
     }
   }
 }
-
-// matrix mat_ident(size_t row, size_t col) {
-//   matrix mat = mat_alloc(row, col);
-//   for (size_t i = 0; i < row; i++) {
-//     for (size_t j = 0; j < col; j++) {
-//       if (i == j) {
-//         MAT_SET_AT(mat, i, j, 1.0);
-//       } else {
-//         MAT_SET_AT(mat, i, j, 0.0);
-//       }
-//     }
-//   }
-//   return mat;
-// }
 
 mat_status mat_scale(matrix *mat, float sca) {
   if (!(mat && mat->data)) {
